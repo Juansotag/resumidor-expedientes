@@ -12,7 +12,7 @@ MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
 
 @router.post("/analyze")
-async def analyze(file: UploadFile = File(...), api_key: str = Form(None)):
+async def analyze(file: UploadFile = File(...), api_key: str = Form(None), use_search: str = Form("false")):
     """
     Recibe un documento, lo procesa y devuelve un resumen ejecutivo en HTML.
     """
@@ -66,8 +66,9 @@ async def analyze(file: UploadFile = File(...), api_key: str = Form(None)):
             )
 
         # 2. Llamar a Claude (síncrono, corre en thread para no bloquear el event loop)
+        do_search = use_search.lower() == "true"
         raw_html, sources = await asyncio.to_thread(
-            claude_service.analyze, text, images, api_key
+            claude_service.analyze, text, images, api_key, do_search
         )
 
         if not raw_html:

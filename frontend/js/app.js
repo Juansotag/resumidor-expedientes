@@ -298,6 +298,11 @@ async function analyzeFile(file) {
     localStorage.setItem('anthropic_api_key', apiKeyInput.value.trim());
   }
 
+  const useSearchCheckbox = document.getElementById('use-search-checkbox');
+  if (useSearchCheckbox) {
+    formData.append('use_search', useSearchCheckbox.checked ? 'true' : 'false');
+  }
+
   try {
     const response = await fetch('/api/analyze', {
       method: 'POST',

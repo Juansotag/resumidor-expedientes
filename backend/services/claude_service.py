@@ -110,7 +110,7 @@ El HTML debe seguir esta estructura:
 MODEL = "claude-sonnet-4-20250514"
 
 
-def analyze(text: str, images: list[str], api_key: str = None) -> tuple[str, list[str]]:
+def analyze(text: str, images: list[str], api_key: str = None, use_search: bool = False) -> tuple[str, list[str]]:
     """
     Llama a Claude API con el texto e imágenes del documento.
     Usa el cliente síncrono de Anthropic (llamado desde el endpoint con run_in_executor).
@@ -167,13 +167,17 @@ def analyze(text: str, images: list[str], api_key: str = None) -> tuple[str, lis
         }
     ]
 
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=4000,
-        system=SYSTEM_PROMPT,
-        tools=tools,
-        messages=messages,
-    )
+    kwargs = {
+        "model": MODEL,
+        "max_tokens": 4000,
+        "system": SYSTEM_PROMPT,
+        "messages": messages,
+    }
+    
+    if use_search:
+        kwargs["tools"] = tools
+
+    response = client.messages.create(**kwargs)
 
     sources = []
 
@@ -204,13 +208,7 @@ def analyze(text: str, images: list[str], api_key: str = None) -> tuple[str, lis
         messages.append({"role": "user", "content": tool_results})
         
         # Volver a llamar a Claude con los resultados
-        response = client.messages.create(
-            model=MODEL,
-            max_tokens=4000,
-            system=SYSTEM_PROMPT,
-            tools=tools,
-            messages=messages,
-        )
+        response = client.messages.create(**kwargs)
 
     # Extraer HTML del texto
     html_output = ""
