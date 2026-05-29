@@ -188,7 +188,9 @@ def analyze(text: str, images: list[str], api_key: str = None, use_search: bool 
     sources = []
 
     # Bucle para manejar uso de herramientas (búsqueda web)
-    while response.stop_reason == "tool_use":
+    iteration_count = 0
+    while response.stop_reason == "tool_use" and iteration_count < 10:
+        iteration_count += 1
         messages.append({"role": "assistant", "content": response.content})
         tool_results = []
         
@@ -214,6 +216,19 @@ def analyze(text: str, images: list[str], api_key: str = None, use_search: bool 
         messages.append({"role": "user", "content": tool_results})
         
         # Volver a llamar a Claude con los resultados
+        response = client.messages.create(**kwargs)
+
+    if iteration_count >= 3 and response.stop_reason == "tool_use":
+        messages.append({"role": "assistant", "content": response.content})
+        tool_results = []
+        for block in response.content:
+            if block.type == "tool_use":
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": "ERROR: Límite de búsquedas alcanzado. Por favor finaliza el resumen con la información disponible. NO LLAMES A MÁS HERRAMIENTAS."
+                })
+        messages.append({"role": "user", "content": tool_results})
         response = client.messages.create(**kwargs)
 
     # Extraer HTML del texto
