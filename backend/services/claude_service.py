@@ -61,7 +61,7 @@ El HTML debe seguir esta estructura:
     <h2>Contexto y Benchmarks</h2>
     <p>[2-3 párrafos. Cómo lo hacen universidades de referencia o qué dice la normativa. Incluir abundantes citas en formato APA.]</p>
     <div class="references">
-      <a href="[URL]" class="ref-link" target="_blank">[Cita en formato APA]</a>
+      <a href="INSERTAR_URL_REAL_AQUI" class="ref-link" target="_blank">[Cita en formato APA]</a>
     </div>
   </section>
 
@@ -100,8 +100,6 @@ El HTML debe seguir esta estructura:
 - Máximo 2 páginas visuales en total
 - Lenguaje ejecutivo: oraciones cortas, verbos activos, sin jerga académica innecesaria
 - Si usas siglas, siempre explícalas la primera vez (ejemplo: Comisión Nacional de Acreditación (CNA)).
-- Las referencias externas deben citarse estrictamente en formato APA y deben ser abundantes.
-- En la sección de referencias, reemplaza SIEMPRE `[URL]` con la URL real obtenida de la búsqueda web. NUNCA uses enlaces vacíos o ficticios como `#`.
 - Los riesgos se identifican pero la propuesta NO se destruye — siempre hay mitigación
 - Si el documento tiene decisiones específicas, mencionarlas explícitamente en la recomendación
 - Nunca inventar datos: si no está en el documento ni en referencias verificables, indicarlo"""
@@ -126,6 +124,12 @@ def analyze(text: str, images: list[str], api_key: str = None, use_search: bool 
 
     import datetime
     current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
+    dynamic_prompt = SYSTEM_PROMPT
+    if use_search:
+        dynamic_prompt += "\n\nINSTRUCCIÓN ESPECIAL: Tienes permitido usar la herramienta web_search. Busca abundante contexto externo. Las referencias externas deben citarse estrictamente en formato APA y deben ser abundantes. En la sección de referencias, reemplaza SIEMPRE `INSERTAR_URL_REAL_AQUI` con la URL real obtenida de la búsqueda web. NUNCA uses enlaces vacíos o ficticios como `#`."
+    else:
+        dynamic_prompt += "\n\nINSTRUCCIÓN ESPECIAL: NO TIENES ACCESO A INTERNET NI BÚSQUEDAS. Basa tu resumen y contexto estrictamente en la información contenida en el documento provisto. No inventes referencias externas. Omite la sección de referencias o elimina el tag <a> si no hay URLs válidas en el documento."
 
     # Texto del documento
     content.append(
@@ -170,7 +174,7 @@ def analyze(text: str, images: list[str], api_key: str = None, use_search: bool 
     kwargs = {
         "model": MODEL,
         "max_tokens": 4000,
-        "system": SYSTEM_PROMPT,
+        "system": dynamic_prompt,
         "messages": messages,
     }
     
