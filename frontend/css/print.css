@@ -1,0 +1,57 @@
+/* ================================================================
+   print.css — Estilos para impresión / exportar como PDF
+   Aplicado cuando el usuario usa Ctrl+P o window.print()
+   GovLab · Universidad de La Sabana
+   ================================================================ */
+
+@media print {
+  /* Ocultar todo excepto el resultado */
+  #navbar,
+  #footer,
+  #state-idle,
+  #state-loading,
+  #state-error,
+  .action-bar {
+    display: none !important;
+  }
+
+  /* Mostrar el resultado aunque no tenga .active en modo print */
+  #state-result {
+    display: block !important;
+  }
+
+  #result-content {
+    padding: 0 !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  body {
+    background: #fff !important;
+    font-size: 11pt;
+  }
+
+  /* Asegurar que los colores se impriman */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Evitar corte de tarjetas de riesgo */
+  .risk-card,
+  .summary-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Salto de página antes de la recomendación si es necesario */
+  .recommendation-section {
+    break-before: auto;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+  }
+}
