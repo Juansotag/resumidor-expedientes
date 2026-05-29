@@ -54,17 +54,26 @@ async function generateWithHtml2PDF(containerEl) {
   const options = {
     margin: [12, 12, 12, 12],
     filename,
-    image: { type: 'jpeg', quality: 0.92 },
-    html2canvas: { scale: 2, useCORS: true, logging: false },
+    image: { type: 'jpeg', quality: 1.0 },
+    html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#dde6f5' },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
   };
+
+  // Prevenir que la animación fadeIn cause semitransparencia al tomar la captura
+  const oldAnimation = containerEl.style.animation;
+  const oldOpacity = containerEl.style.opacity;
+  containerEl.style.animation = 'none';
+  containerEl.style.opacity = '1';
 
   try {
     await html2pdf().set(options).from(containerEl).save();
   } catch (e) {
     console.error("Error generating PDF:", e);
     throw e;
+  } finally {
+    containerEl.style.animation = oldAnimation;
+    containerEl.style.opacity = oldOpacity;
   }
 }
 
@@ -79,10 +88,15 @@ async function generatePDFBlob(containerEl) {
   const options = {
     margin: [12, 12, 12, 12],
     filename: `Resumen_Ejecutivo_GovLab_${formatDateForFilename()}.pdf`,
-    image: { type: 'jpeg', quality: 0.92 },
-    html2canvas: { scale: 2, useCORS: true, logging: false },
+    image: { type: 'jpeg', quality: 1.0 },
+    html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#dde6f5' },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
   };
+
+  const oldAnimation = containerEl.style.animation;
+  const oldOpacity = containerEl.style.opacity;
+  containerEl.style.animation = 'none';
+  containerEl.style.opacity = '1';
 
   try {
     const pdf = await html2pdf().set(options).from(containerEl).outputPdf('blob');
@@ -90,6 +104,9 @@ async function generatePDFBlob(containerEl) {
   } catch (e) {
     console.error("Error generating PDF blob:", e);
     return null;
+  } finally {
+    containerEl.style.animation = oldAnimation;
+    containerEl.style.opacity = oldOpacity;
   }
 }
 
