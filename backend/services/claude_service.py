@@ -1,5 +1,6 @@
 import os
 import anthropic
+from duckduckgo_search import DDGS
 
 ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
 
@@ -141,18 +142,72 @@ def analyze(text: str, images: list[str], api_key: str = None) -> tuple[str, lis
             }
         )
 
+    messages = [{"role": "user", "content": content}]
+    
+    tools = [
+        {
+            "name": "web_search",
+            "description": "Busca en internet información actualizada, leyes, normativas, o contexto sobre organizaciones para complementar el análisis.",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "query": {
+                        "type": "string",
+                        "description": "La consulta de búsqueda."
+                    }
+                },
+                "required": ["query"]
+            }
+        }
+    ]
+
     response = client.messages.create(
         model=MODEL,
         max_tokens=4000,
         system=SYSTEM_PROMPT,
-        tools=[{"type": "web_search_20250305", "name": "web_search"}],
-        messages=[{"role": "user", "content": content}],
+        tools=tools,
+        messages=messages,
     )
 
-    # Extraer HTML del texto y fuentes de búsqueda web
-    html_output = ""
     sources = []
 
+    # Bucle para manejar uso de herramientas (búsqueda web)
+    while response.stop_reason == "tool_use":
+        messages.append({"role": "assistant", "content": response.content})
+        tool_results = []
+        
+        for block in response.content:
+            if block.type == "tool_use" and block.name == "web_search":
+                query = block.input.get("query", "")
+                try:
+                    search_results = list(DDGS().text(query, max_results=3))
+                    result_text = "\n".join([f"[{i+1}] {r['title']}: {r['body']} (URL: {r['href']})" for i, r in enumerate(search_results)])
+                    if not result_text:
+                        result_text = "No se encontraron resultados."
+                    for r in search_results:
+                        sources.append(r['href'])
+                except Exception as e:
+                    result_text = f"Error en búsqueda: {str(e)}"
+                
+                tool_results.append({
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": result_text
+                })
+        
+        messages.append({"role": "user", "content": tool_results})
+        
+        # Volver a llamar a Claude con los resultados
+        response = client.messages.create(
+            model=MODEL,
+            max_tokens=4000,
+            system=SYSTEM_PROMPT,
+            tools=tools,
+            messages=messages,
+        )
+
+    # Extraer HTML del texto
+    html_output = ""
     for block in response.content:
         if block.type == "text":
             html_output += block.text
