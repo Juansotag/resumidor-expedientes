@@ -106,13 +106,17 @@ El HTML debe seguir esta estructura:
 MODEL = "claude-sonnet-4-20250514"
 
 
-def analyze(text: str, images: list[str]) -> tuple[str, list[str]]:
+def analyze(text: str, images: list[str], api_key: str = None) -> tuple[str, list[str]]:
     """
     Llama a Claude API con el texto e imágenes del documento.
     Usa el cliente síncrono de Anthropic (llamado desde el endpoint con run_in_executor).
     Devuelve (html_string, sources_list).
     """
-    client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
+    final_api_key = api_key if api_key else ANTHROPIC_API_KEY
+    if not final_api_key:
+        raise ValueError("No se proporcionó una API Key de Anthropic.")
+        
+    client = anthropic.Anthropic(api_key=final_api_key)
 
     content = []
 
