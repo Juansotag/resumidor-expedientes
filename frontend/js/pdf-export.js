@@ -91,6 +91,7 @@ async function generatePDFBlob(containerEl) {
     image: { type: 'jpeg', quality: 1.0 },
     html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#dde6f5' },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
   };
 
   const oldAnimation = containerEl.style.animation;
