@@ -59,9 +59,9 @@ El HTML debe seguir esta estructura:
 
   <section class="summary-section">
     <h2>Contexto y Benchmarks</h2>
-    <p>[1-2 párrafos. Cómo lo hacen universidades de referencia o qué dice la normativa. Incluir 2-3 referencias con links.]</p>
+    <p>[2-3 párrafos. Cómo lo hacen universidades de referencia o qué dice la normativa. Incluir abundantes citas en formato APA.]</p>
     <div class="references">
-      <a href="[URL]" class="ref-link" target="_blank">[Nombre de fuente]</a>
+      <a href="[URL]" class="ref-link" target="_blank">[Cita en formato APA]</a>
     </div>
   </section>
 
@@ -99,6 +99,8 @@ El HTML debe seguir esta estructura:
 
 - Máximo 2 páginas visuales en total
 - Lenguaje ejecutivo: oraciones cortas, verbos activos, sin jerga académica innecesaria
+- Si usas siglas, siempre explícalas la primera vez (ejemplo: Comisión Nacional de Acreditación (CNA)).
+- Las referencias externas deben citarse estrictamente en formato APA y deben ser abundantes.
 - Los riesgos se identifican pero la propuesta NO se destruye — siempre hay mitigación
 - Si el documento tiene decisiones específicas, mencionarlas explícitamente en la recomendación
 - Nunca inventar datos: si no está en el documento ni en referencias verificables, indicarlo"""
@@ -121,11 +123,14 @@ def analyze(text: str, images: list[str], api_key: str = None) -> tuple[str, lis
 
     content = []
 
+    import datetime
+    current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+
     # Texto del documento
     content.append(
         {
             "type": "text",
-            "text": f"A continuación el expediente a resumir:\n\n{text}",
+            "text": f"NOTA IMPORTANTE: Hoy es {current_date}. Actúa con este contexto temporal.\n\nA continuación el expediente a resumir:\n\n{text}",
         }
     )
 
