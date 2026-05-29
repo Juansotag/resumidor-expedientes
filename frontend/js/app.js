@@ -259,7 +259,7 @@ function setupButtons() {
 }
 
 // ---- Validación y selección de archivo ----
-const ALLOWED_EXTENSIONS = ['pdf', 'docx', 'doc', 'png', 'jpg', 'jpeg'];
+const ALLOWED_EXTENSIONS = ['pdf', 'docx', 'doc'];
 const MAX_SIZE_BYTES = 20 * 1024 * 1024; // 20 MB
 
 function handleFileSelection(file) {
@@ -269,7 +269,7 @@ function handleFileSelection(file) {
   const ext = file.name.split('.').pop().toLowerCase();
 
   if (!ALLOWED_EXTENSIONS.includes(ext)) {
-    showToast('Formato no soportado. Usa PDF, Word o imagen (PNG, JPG).');
+    showToast('Formato no soportado. Usa solo PDF o Word.');
     return;
   }
 

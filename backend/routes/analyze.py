@@ -6,7 +6,7 @@ from backend.services import document_processor, claude_service, html_generator
 
 router = APIRouter()
 
-ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc", ".png", ".jpg", ".jpeg"}
+ALLOWED_EXTENSIONS = {".pdf", ".docx", ".doc"}
 MAX_FILE_SIZE_MB = int(os.environ.get("MAX_FILE_SIZE_MB", "20"))
 MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
@@ -24,7 +24,7 @@ async def analyze(file: UploadFile = File(...), api_key: str = Form(None)):
             status_code=400,
             detail={
                 "status": "error",
-                "message": f"Formato no soportado. Usa PDF, Word o imagen. Recibido: '{ext}'",
+                "message": f"Formato no soportado. Usa solo PDF o Word. Recibido: '{ext}'",
             },
         )
 
