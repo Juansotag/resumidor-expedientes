@@ -101,6 +101,7 @@ El HTML debe seguir esta estructura:
 - Lenguaje ejecutivo: oraciones cortas, verbos activos, sin jerga académica innecesaria
 - Si usas siglas, siempre explícalas la primera vez (ejemplo: Comisión Nacional de Acreditación (CNA)).
 - Las referencias externas deben citarse estrictamente en formato APA y deben ser abundantes.
+- En la sección de referencias, reemplaza SIEMPRE `[URL]` con la URL real obtenida de la búsqueda web. NUNCA uses enlaces vacíos o ficticios como `#`.
 - Los riesgos se identifican pero la propuesta NO se destruye — siempre hay mitigación
 - Si el documento tiene decisiones específicas, mencionarlas explícitamente en la recomendación
 - Nunca inventar datos: si no está en el documento ni en referencias verificables, indicarlo"""
