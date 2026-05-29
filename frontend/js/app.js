@@ -57,6 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
   footerYear.textContent = new Date().getFullYear();
   setupDropzone();
   setupButtons();
+  
+  const savedApiKey = localStorage.getItem('anthropic_api_key');
+  const apiKeyInput = document.getElementById('api-key-input');
+  if (savedApiKey && apiKeyInput) {
+    apiKeyInput.value = savedApiKey;
+  }
+
   setState(AppState.IDLE);
 });
 
@@ -284,6 +291,12 @@ async function analyzeFile(file) {
 
   const formData = new FormData();
   formData.append('file', file);
+
+  const apiKeyInput = document.getElementById('api-key-input');
+  if (apiKeyInput && apiKeyInput.value.trim() !== '') {
+    formData.append('api_key', apiKeyInput.value.trim());
+    localStorage.setItem('anthropic_api_key', apiKeyInput.value.trim());
+  }
 
   try {
     const response = await fetch('/api/analyze', {

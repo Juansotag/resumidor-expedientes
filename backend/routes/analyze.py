@@ -1,6 +1,6 @@
 import os
 import asyncio
-from fastapi import APIRouter, File, UploadFile, HTTPException
+from fastapi import APIRouter, File, UploadFile, HTTPException, Form
 from fastapi.responses import JSONResponse
 from backend.services import document_processor, claude_service, html_generator
 
@@ -12,7 +12,7 @@ MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
 
 
 @router.post("/analyze")
-async def analyze(file: UploadFile = File(...)):
+async def analyze(file: UploadFile = File(...), api_key: str = Form(None)):
     """
     Recibe un documento, lo procesa y devuelve un resumen ejecutivo en HTML.
     """
@@ -67,7 +67,7 @@ async def analyze(file: UploadFile = File(...)):
 
         # 2. Llamar a Claude (síncrono, corre en thread para no bloquear el event loop)
         raw_html, sources = await asyncio.to_thread(
-            claude_service.analyze, text, images
+            claude_service.analyze, text, images, api_key
         )
 
         if not raw_html:
