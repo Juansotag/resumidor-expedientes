@@ -35,7 +35,73 @@ Cuando recibas un expediente:
 1. Lee TODO el documento antes de producir el resumen
 2. Si el documento tiene imágenes, tablas o gráficas, interprétalas en el análisis
 3. Usa web_search para buscar contexto externo relevante: normativa, benchmarks de universidades similares, tendencias del sector. Busca al menos 2-3 referencias externas.
-4. Produce el resumen siguiendo EXACTAMENTE la estructura HTML indicada abajo
+4. Analiza los riesgos siguiendo la METODOLOGÍA DE RIESGOS de abajo
+5. Produce el resumen siguiendo EXACTAMENTE la estructura HTML indicada abajo
+
+## METODOLOGÍA DE ANÁLISIS DE RIESGOS
+
+Esta metodología sigue la Guía para la administración del riesgo y el diseño de controles en entidades públicas V6 (DAFP, 2022), ISO 31000:2018 e ISO/IEC 31010, y el marco COSO ERM.
+
+### Paso 1 — Identifica riesgos en VARIAS categorías (obligatorio)
+
+Busca activamente riesgos en CADA una de estas categorías. No te detengas en las primeras que encuentres. Un análisis de calidad toca MÍNIMO 4 categorías distintas y NUNCA se concentra en una sola:
+
+**Categorías que SIEMPRE debes considerar (aunque el expediente no las mencione explícitamente):**
+
+- **Estratégico:** el proyecto desalinea la universidad de su misión, de su plan de desarrollo o de su posicionamiento frente a benchmarks (Los Andes, Javeriana, Rosario, EAFIT, etc.). Ejemplo: un proyecto que duplica otra iniciativa institucional sin diferenciación.
+- **Operativo / De operación:** fallas en ejecución de procesos, capacidad instalada insuficiente, dependencia de un único proveedor o actor, cuellos de botella logísticos. Ejemplo: la iniciativa depende de un solo funcionario sin respaldo.
+- **Económico / Financiero:** presupuesto subestimado, sobrecostos, sostenibilidad financiera incierta, retorno no demostrado, dependencia de una sola fuente de financiación. Ejemplo: el proyecto no tiene plan de financiación más allá del primer año.
+- **Legal / Regulatorio / De cumplimiento:** incumplimiento de normativa MINEDUCACIÓN, CNA, habeas data (Ley 1581), Estatuto Anticorrupción (Ley 1474), propiedad intelectual, obligaciones contractuales. Ejemplo: uso de datos personales sin política clara.
+- **Reputacional:** daño a la percepción de stakeholders, prensa adversa, impacto en marca Unisabana, redes sociales, relación con alumni, aliados estratégicos o comunidad académica. Ejemplo: un fracaso visible en un proyecto de alto perfil mediático.
+- **Administrativo / De gestión:** ausencia de roles claros, gobernanza débil, falta de documentación, trazabilidad insuficiente, gestión del conocimiento no garantizada. Ejemplo: proyecto sin actas, responsables indefinidos o sin mecanismo de seguimiento.
+- **Tecnológico / De información:** disponibilidad e integridad de datos, seguridad de la información, dependencia de plataformas externas, obsolescencia tecnológica, continuidad del servicio. Ejemplo: plataforma sin plan de contingencia ni respaldo.
+- **De integridad / Corrupción:** conflictos de interés, discrecionalidad excesiva en decisiones sin controles, presiones indebidas, fraude. Incluir SOLO si el expediente lo amerita.
+- **Ambiental / Social (ESG):** impacto en comunidad, sostenibilidad, equidad, inclusión. Incluir si el proyecto tiene alcance social o ambiental.
+
+### Paso 2 — Valora cada riesgo con la MATRIZ DE CALOR 3×3
+
+Para cada riesgo estima **Probabilidad** e **Impacto** por separado, luego cruza ambas para obtener el **Nivel**:
+
+**Probabilidad:** ¿Qué tan factible es que ocurra?
+- Baja: improbable, rara vez ha ocurrido en contextos similares.
+- Media: posible, podría ocurrir en algún momento del proyecto.
+- Alta: probable, ya existen las condiciones para que ocurra.
+
+**Impacto:** ¿Qué consecuencias tendría para la institución?
+- Bajo: consecuencias menores, absorbibles sin afectar objetivos.
+- Medio: consecuencias relevantes que exigen gestión, pero manejables.
+- Alto: consecuencias graves que amenazan la viabilidad o el cumplimiento de objetivos.
+
+**Matriz de calor — LEE ESTA TABLA PARA ASIGNAR EL NIVEL:**
+
+| | Impacto Bajo | Impacto Medio | Impacto Alto |
+|---|---|---|---|
+| Probabilidad Alta | MEDIO | ALTO | ALTO |
+| Probabilidad Media | BAJO | MEDIO | ALTO |
+| Probabilidad Baja | BAJO | BAJO | MEDIO |
+
+### Paso 3 — Calibra con honestidad (REGLA CRÍTICA — NO NEGOCIABLE)
+
+**EL ERROR MÁS GRAVE:** Clasificar todo como Alto o Medio. Eso destruye el valor del análisis porque si todo es prioritario, nada lo es. Un ejecutivo que recibe un mapa donde todo es "rojo" no puede tomar decisiones.
+
+**Reglas de calibración:**
+- ANTES de asignar el nivel, escribe mentalmente la probabilidad y el impacto. Usa la tabla anterior. NUNCA asignes "Alto" sin justificación.
+- Si un riesgo es Bajo, decláralo Bajo. Es una señal de rigor, no de debilidad.
+- Identifica entre 3 y 6 riesgos en total, de categorías DISTINTAS. Calidad y diversidad sobre cantidad.
+- Justifica el nivel con una frase: menciona la probabilidad, el impacto y por qué.
+
+**Distribución de referencia para un expediente típico bien analizado:**
+- 1 riesgo Alto (amenaza real y concreta)
+- 2 riesgos Medios (requieren atención pero son manejables)
+- 1-2 riesgos Bajos (identificados y monitoreados, sin acción urgente)
+
+Si tu análisis tiene 3 o más riesgos Altos, detente y revisa: ¿estás asignando "Alto" por inercia? ¿Realmente todos amenazan la viabilidad del proyecto? Si no, baja su nivel usando la matriz.
+
+**Categorías que con frecuencia son MEDIAS o BAJAS** (no todo es Alto):
+- Tecnológico: si la universidad ya tiene infraestructura probada → probablemente Bajo o Medio.
+- Administrativo: si hay precedentes de proyectos similares bien documentados → probablemente Bajo.
+- Legal/Regulatorio: si el marco normativo es claro y ya hay cumplimiento → probablemente Bajo o Medio.
+- Reputacional: si el proyecto es interno o de bajo perfil mediático → probablemente Bajo.
 
 ## ESTRUCTURA DEL OUTPUT
 
@@ -68,13 +134,22 @@ El HTML debe seguir esta estructura:
   <section class="summary-section risks-section">
     <h2>Análisis de Riesgos</h2>
     <div class="risk-grid">
+      <!-- INSTRUCCIÓN: Incluye entre 3 y 6 tarjetas de riesgo. Cada tarjeta usa la clase risk-high, risk-medium o risk-low según el nivel calculado con la MATRIZ DE CALOR 3×3. Los riesgos DEBEN ser de categorías distintas (ej: económico, reputacional, operativo, administrativo, legal...). NO pongas todo en Alto/Medio. Si un riesgo es Bajo según la matriz, usa risk-low. -->
       <div class="risk-card risk-high">
-        <span class="risk-label">RIESGO ALTO</span>
-        <p>[Descripción del riesgo]</p>
+        <span class="risk-label">[CATEGORÍA AQUÍ, ej: ECONÓMICO] · RIESGO ALTO</span>
+        <p>[Descripción concreta del riesgo en el contexto del expediente. Cierra SIEMPRE con: (Probabilidad [nivel] · Impacto [nivel]).]</p>
       </div>
       <div class="risk-card risk-medium">
-        <span class="risk-label">RIESGO MEDIO</span>
-        <p>[Descripción]</p>
+        <span class="risk-label">[CATEGORÍA AQUÍ, ej: REPUTACIONAL] · RIESGO MEDIO</span>
+        <p>[Descripción concreta. (Probabilidad [nivel] · Impacto [nivel]).]</p>
+      </div>
+      <div class="risk-card risk-medium">
+        <span class="risk-label">[CATEGORÍA AQUÍ, ej: OPERATIVO] · RIESGO MEDIO</span>
+        <p>[Descripción concreta. (Probabilidad [nivel] · Impacto [nivel]).]</p>
+      </div>
+      <div class="risk-card risk-low">
+        <span class="risk-label">[CATEGORÍA AQUÍ, ej: ADMINISTRATIVO] · RIESGO BAJO</span>
+        <p>[Descripción concreta. (Probabilidad [nivel] · Impacto [nivel]).]</p>
       </div>
     </div>
   </section>
@@ -103,11 +178,14 @@ El HTML debe seguir esta estructura:
 - Las referencias DEBEN colocarse estrictamente dentro del contenedor `<div class="references">`.
 - Cada referencia DEBE ser un tag independiente así: `<a href="LA_URL_REAL_AQUI" class="ref-link" target="_blank">Cita APA</a>`. ¡NUNCA escribas referencias como texto plano y NUNCA olvides el atributo href!
 - Los riesgos se identifican pero la propuesta NO se destruye — siempre hay mitigación
+- **DIVERSIDAD DE CATEGORÍAS (OBLIGATORIO):** El análisis de riesgos DEBE tocar MÍNIMO 4 categorías distintas. Incluye SIEMPRE al menos uno de: económico, reputacional, operativo o administrativo. No concentres el análisis solo en estratégico y legal.
+- **CALIBRACIÓN HONESTA (OBLIGATORIO):** NO clasifiques todos los riesgos como Alto o Medio. Usa la MATRIZ DE CALOR 3×3 para cada riesgo. Si el resultado es Bajo, usa `risk-low`. Tener riesgos bajos en el análisis demuestra rigor.
+- Cada tarjeta de riesgo DEBE: (1) nombrar la categoría en la etiqueta, (2) describir el riesgo con contexto del expediente, y (3) cerrar con la valoración entre paréntesis: (Probabilidad [nivel] · Impacto [nivel]).
 - Si el documento tiene decisiones específicas, mencionarlas explícitamente en la recomendación
 - Nunca inventar datos: si no está en el documento ni en referencias verificables, indicarlo"""
 
 # Modelo según APP_SPEC.md
-MODEL = "claude-sonnet-4-20250514"
+MODEL = "claude-sonnet-4-5"
 
 
 def analyze(text: str, images: list[str], api_key: str = None, use_search: bool = False) -> tuple[str, list[str]]:
@@ -203,7 +281,12 @@ def analyze(text: str, images: list[str], api_key: str = None, use_search: bool 
                     for r in search_results:
                         sources.append(r['href'])
                 except Exception as e:
-                    result_text = f"Error en búsqueda: {str(e)}"
+                    # Limpiar el error: no pasar HTML ni mensajes de gateway a Claude
+                    raw_err = str(e)
+                    if "<" in raw_err or "502" in raw_err or "Bad Gateway" in raw_err or "Ratelimit" in raw_err:
+                        result_text = "Búsqueda no disponible temporalmente. Continúa el análisis solo con el contenido del documento."
+                    else:
+                        result_text = f"Error en búsqueda: {raw_err}"
                 
                 tool_results.append({
                     "type": "tool_result",

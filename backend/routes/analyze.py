@@ -95,10 +95,13 @@ async def analyze(file: UploadFile = File(...), api_key: str = Form(None), use_s
     except HTTPException:
         raise
     except Exception as e:
+        error_msg = str(e)
+        if "502 Bad Gateway" in error_msg or "<html" in error_msg.lower():
+            error_msg = "El servicio de Inteligencia Artificial está temporalmente fuera de servicio (Error de conexión / 502 Bad Gateway). Por favor, intenta de nuevo en unos minutos."
         raise HTTPException(
             status_code=500,
             detail={
                 "status": "error",
-                "message": f"Ocurrió un error al procesar el expediente: {str(e)}",
+                "message": f"Ocurrió un error al procesar el expediente: {error_msg}",
             },
         )
