@@ -49,7 +49,7 @@ async function exportToPDF(containerEl, htmlContent) {
  * Genera y descarga un PDF con html2pdf.js (desktop).
  */
 async function generateWithHtml2PDF(containerEl) {
-  const filename = `Resumen_Ejecutivo_GovLab_${formatDateForFilename()}.pdf`;
+  const filename = getExportFilename(containerEl, 'pdf');
 
   const options = {
     margin: [12, 12, 12, 12],
@@ -85,9 +85,11 @@ async function generateWithHtml2PDF(containerEl) {
 async function generatePDFBlob(containerEl) {
   if (typeof html2pdf === 'undefined') return null;
 
+  const filename = getExportFilename(containerEl, 'pdf');
+
   const options = {
     margin: [12, 12, 12, 12],
-    filename: `Resumen_Ejecutivo_GovLab_${formatDateForFilename()}.pdf`,
+    filename,
     image: { type: 'jpeg', quality: 1.0 },
     html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#dde6f5' },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -115,7 +117,7 @@ async function generatePDFBlob(containerEl) {
  * Descarga el contenido como archivo HTML (último recurso).
  */
 function downloadAsHTML(htmlContent) {
-  const filename = `Resumen_Ejecutivo_GovLab_${formatDateForFilename()}.html`;
+  const filename = getExportFilename(htmlContent, 'html');
   const fullHTML = `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -132,6 +134,32 @@ function downloadAsHTML(htmlContent) {
   const a    = document.createElement('a');
   a.href = url; a.download = filename; a.click();
   URL.revokeObjectURL(url);
+}
+
+/**
+ * Obtiene el nombre del archivo de exportación con el formato "Resumen expediente - {título}"
+ * Limpiando caracteres que no son válidos para nombres de archivos.
+ */
+function getExportFilename(source, extension) {
+  let docTitle = '';
+  if (typeof source === 'string') {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(source, 'text/html');
+    const titleEl = doc.querySelector('.doc-title');
+    if (titleEl) docTitle = titleEl.textContent.trim();
+  } else if (source instanceof HTMLElement) {
+    const titleEl = source.querySelector('.doc-title');
+    if (titleEl) docTitle = titleEl.textContent.trim();
+  }
+
+  if (docTitle) {
+    // Limpiar caracteres inválidos para nombres de archivos
+    const safeTitle = docTitle.replace(/[/\\?%*:|"<>\n\r\t]/g, '').trim();
+    if (safeTitle) {
+      return `Resumen expediente - ${safeTitle}.${extension}`;
+    }
+  }
+  return `Resumen expediente.${extension}`;
 }
 
 /** Detecta si es mobile (táctil + ancho < 768px) */

@@ -23,9 +23,12 @@ async function shareResult(htmlContent) {
       try { pdfBlob = await generatePDFBlob(resultEl); } catch (_) {}
 
       if (pdfBlob && navigator.canShare({ files: [new File([pdfBlob], 'resumen.pdf', { type: 'application/pdf' })] })) {
+        const filename = typeof getExportFilename !== 'undefined'
+          ? getExportFilename(resultEl, 'pdf')
+          : `Resumen_Ejecutivo_GovLab_${formatDateForFilename()}.pdf`;
         const file = new File(
           [pdfBlob],
-          `Resumen_Ejecutivo_GovLab_${formatDateForFilename()}.pdf`,
+          filename,
           { type: 'application/pdf' }
         );
         await navigator.share({
